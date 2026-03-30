@@ -11,3 +11,4 @@ safetensors
 librosa
 requests
 pandas
+streamlit
