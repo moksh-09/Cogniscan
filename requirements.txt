@@ -11,6 +11,6 @@ safetensors
 librosa
 requests
 pandas
-streamlit==1.32.0
-altair==4.2.2
-pillow==9.5.0
+streamlit>=1.33.0
+pillow>=10.0.0
+altair
