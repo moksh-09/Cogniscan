@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>CogniScan — AI Cognitive Health Monitor</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+/* ── Extra styles for new features ── */
+.emergency-card {
+  background: linear-gradient(135deg, #fff5f5 0%, #fff 100%);
+  border: 1.5px solid #fde8e5;
+  border-radius: 24px;
+  margin: 0 20px 14px;
+  padding: 18px 20px;
+  box-shadow: 0 2px 14px rgba(224,123,106,0.1);
+}
+
+.contact-avatar {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+.contact-avatar-placeholder {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: 800;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.sos-btn {
+  background: linear-gradient(135deg, #E07B6A 0%, #c0392b 100%);
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 72px;
+  height: 72px;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(224,123,106,0.45);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  transition: transform .15s, box-shadow .15s;
+  letter-spacing: 0.5px;
+}
+
+.sos-btn:active { transform: scale(0.93); box-shadow: 0 2px 10px rgba(224,123,106,0.3); }
+
+@keyframes sosPulse {
+  0%, 100% { box-shadow: 0 4px 20px rgba(224,123,106,0.45); }
+  50%       { box-shadow: 0 4px 36px rgba(224,123,106,0.75), 0 0 0 12px rgba(224,123,106,0.12); }
+}
+.sos-pulse { animation: sosPulse 2s ease-in-out infinite; }
+
+/* Memory card with image */
+.mem-img-card {
+  width: 100%;
+  height: 160px;
+  border-radius: 20px;
+  object-fit: cover;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.mem-img-placeholder {
+  width: 100%;
+  height: 160px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 72px;
+  background: #f0f9f5;
+  margin-bottom: 10px;
+}
+
+/* Voice assistant bubble */
+.va-bubble {
+  background: linear-gradient(135deg, #1A6B72 0%, #0d4a50 100%);
+  border-radius: 20px 20px 4px 20px;
+  padding: 14px 18px;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.5;
+  margin: 0 20px 14px;
+  position: relative;
+  box-shadow: 0 4px 16px rgba(26,107,114,0.25);
+}
+
+.va-bubble::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 20px;
+  border: 10px solid transparent;
+  border-top-color: #0d4a50;
+  border-bottom: 0;
+  border-left: 0;
+}
+
+.va-typing span {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.7);
+  margin: 0 2px;
+  animation: vaDot 1.2s ease-in-out infinite;
+}
+.va-typing span:nth-child(2) { animation-delay: .2s; }
+.va-typing span:nth-child(3) { animation-delay: .4s; }
+
+@keyframes vaDot {
+  0%, 80%, 100% { transform: scale(0.7); opacity: .5; }
+  40%            { transform: scale(1.1); opacity: 1; }
+}
+
+/* Gemini analysis badge */
+.gemini-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  background: linear-gradient(90deg, #4285f4, #0f9d58, #f4b400, #db4437);
+  background-size: 300% 100%;
+  animation: googleGrad 3s ease infinite;
+  border-radius: 20px;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+}
+
+@keyframes googleGrad {
+  0%, 100% { background-position: 0% 50%; }
+  50%       { background-position: 100% 50%; }
+}
+
+/* Record button states */
+.rec-btn-active { background: #E07B6A !important; animation: recPulse 1.2s ease-in-out infinite; }
+@keyframes recPulse {
+  0%,100% { box-shadow: 0 6px 24px rgba(224,123,106,0.35); }
+  50%      { box-shadow: 0 6px 36px rgba(224,123,106,0.65), 0 0 0 14px rgba(224,123,106,0.12); }
+}
+
+/* Contact form */
+.form-input {
+  width: 100%;
+  padding: 14px 16px;
+  border: 2px solid #e8ecef;
+  border-radius: 16px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: #2C2C2C;
+  outline: none;
+  transition: border-color .2s;
+  margin-top: 8px;
+}
+.form-input:focus { border-color: #1A6B72; }
+
+/* Shake animation for emergency */
+@keyframes shakeAlert {
+  0%, 100% { transform: translateX(0); }
+  20%       { transform: translateX(-6px); }
+  40%       { transform: translateX(6px); }
+  60%       { transform: translateX(-4px); }
+  80%       { transform: translateX(4px); }
+}
+.shake { animation: shakeAlert .5s ease; }
+
+/* Tab switcher */
+.tab-bar {
+  display: flex;
+  background: #f0f4f7;
+  border-radius: 16px;
+  padding: 4px;
+  margin: 0 20px 14px;
+}
+.tab-btn {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  border-radius: 12px;
+  background: transparent;
+  font-family: 'Nunito', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: #888;
+  cursor: pointer;
+  transition: all .2s;
+}
+.tab-btn.active {
+  background: #fff;
+  color: #1A6B72;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* Audio visualizer */
+.audio-wave {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  height: 48px;
+}
+.audio-wave .bar {
+  width: 4px;
+  border-radius: 2px;
+  background: #1A6B72;
+  height: 8px;
+  transition: height .1s ease;
+}
+  .header-main {
+    padding: 20px 24px 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .brand {
+    font-size: 20px;
+    font-weight: 800;
+    color: #1A6B72;
+    letter-spacing: -0.5px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .brand span { color: #2C2C2C; }
+  .cp-link-btn {
+    font-size: 13px;
+    font-weight: 700;
+    color: #1A6B72;
+    background: #e8f5ee;
+    padding: 8px 14px;
+    border-radius: 12px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s;
+  }
+  .cp-link-btn:hover { background: #d0edd9; transform: translateY(-1px); }
+</style>
+</head>
+<body>
+<div class="phone">
+
+<!-- ═══════════════════════════════════
+     SCREEN 0: SETUP
+═══════════════════════════════════ -->
+<div class="screen active" id="setup">
+  <div style="padding:60px 28px 0;flex:1;display:flex;flex-direction:column;justify-content:center;">
+    <div style="text-align:center;margin-bottom:32px;">
+      <div style="width:88px;height:88px;background:rgba(255,255,255,0.15);border-radius:28px;margin:0 auto 20px;display:flex;align-items:center;justify-content:center;border:2px solid rgba(255,255,255,0.25);">
+        <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+      </div>
+      <h1 style="color:#fff;font-size:36px;font-family:'Outfit',sans-serif;">CogniScan</h1>
+      <p style="color:rgba(255,255,255,0.75);font-size:17px;margin-top:8px;font-weight:600;">AI Cognitive Health Monitor</p>
+    </div>
+
+    <div class="card" style="margin:0 0 14px;">
+      <p class="label" style="color:rgba(255,255,255,0.7);">Your Name</p>
+      <input class="form-input" type="text" id="userName" placeholder="Robert" style="background:rgba(255,255,255,0.15);border-color:rgba(255,255,255,0.2);color:#fff;margin-top:8px;">
+    </div>
+
+    <div class="card" style="margin:0 0 14px;">
+      <p class="label" style="color:rgba(255,255,255,0.7);">Anthropic API Key (for Face AI)</p>
+      <input class="form-input" type="password" id="apiKeyInput" placeholder="sk-ant-api03-..." style="background:rgba(255,255,255,0.15);border-color:rgba(255,255,255,0.2);color:#fff;margin-top:8px;">
+    </div>
+
+    <div style="margin:0 0 10px;">
+      <button class="btn" style="background:#fff;color:#1A6B72;" onclick="startApp()">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+        Get Started
+      </button>
+    </div>
+    <div>
+      <button class="btn btn-sm" style="background:rgba(255,255,255,0.15);color:#fff;border:1.5px solid rgba(255,255,255,0.3);" onclick="skipSetup()">
+        Skip — Use Demo Mode
+      </button>
+    </div>
+
+    <div style="margin-top:28px;display:flex;justify-content:center;gap:24px;">
+      <div style="text-align:center;color:rgba(255,255,255,0.7);">
+        <div style="font-size:24px;">🎙</div>
+        <p style="font-size:12px;font-weight:700;margin-top:4px;">Voice AI</p>
+      </div>
+      <div style="text-align:center;color:rgba(255,255,255,0.7);">
+        <div style="font-size:24px;">🧠</div>
+        <p style="font-size:12px;font-weight:700;margin-top:4px;">Memory</p>
+      </div>
+      <div style="text-align:center;color:rgba(255,255,255,0.7);">
+        <div style="font-size:24px;">😊</div>
+        <p style="font-size:12px;font-weight:700;margin-top:4px;">Face AI</p>
+      </div>
+      <div style="text-align:center;color:rgba(255,255,255,0.7);">
+        <div style="font-size:24px;">🆘</div>
+        <p style="font-size:12px;font-weight:700;margin-top:4px;">SOS</p>
+      </div>
+    </div>
+  </div>
+  <div style="padding:24px 28px;text-align:center;color:rgba(255,255,255,0.45);font-size:12px;font-weight:600;">
+    Powered by CogniScan AI & Gemini · Data stays on device
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+     SCREEN 1: HOME
+═══════════════════════════════════ -->
+<div class="screen" id="s1">
+  <div class="sbar"><span id="homeTime">9:41</span><span style="font-size:13px;font-weight:700;color:#888;" id="homeDate">Sunday, Mar 29</span></div>
+
+  <div style="padding:4px 24px 0;display:flex;justify-content:space-between;align-items:flex-start;">
+    <div>
+      <p id="greetPrefix" class="sub" style="margin-bottom:4px;">Good Morning,</p>
+      <h1 id="greetName">Robert 👋</h1>
+    </div>
+    <div style="display:flex;gap:10px;align-items:center;">
+      <!-- SOS quick button -->
+      <button class="sos-btn sos-pulse" onclick="triggerEmergency()" title="Emergency SOS">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 014.82 12 19.79 19.79 0 011.77 3.4 2 2 0 013.74 1h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L7.91 8.9a16 16 0 006.29 6.29l1.06-1.06a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+        <span>SOS</span>
+      </button>
+      <div style="position:relative;cursor:pointer;" onclick="goto('s5')">
+        <div id="homeProfileIcon" style="width:50px;height:50px;border-radius:50%;background:#fff;box-shadow:0 2px 12px rgba(0,0,0,0.1);display:flex;align-items:center;justify-content:center;overflow:hidden;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1A6B72" stroke-width="2" stroke-linecap="round"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+        </div>
+        <div style="position:absolute;top:1px;right:1px;width:12px;height:12px;background:#E07B6A;border-radius:50%;border:2px solid #F8F9FA;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Voice Assistant Bubble -->
+  <div class="va-bubble" id="vaBubble" style="margin-top:14px;">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+      <div style="width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M12 2a3 3 0 013 3v7a3 3 0 01-6 0V5a3 3 0 013-3z"/><path d="M19 10v2a7 7 0 01-14 0v-2"/></svg>
+      </div>
+      <span style="font-size:12px;font-weight:700;opacity:.75;">CogniScan Assistant</span>
+    </div>
+    <p id="vaText" style="margin:0;font-size:15px;line-height:1.5;">Hello! I'm ready to help you with your cognitive health check today. Tap a test below to begin! 🌟</p>
+  </div>
+
+  <!-- Health Ring -->
+  <div style="padding:10px 0 6px;">
+    <div class="ring-wrap">
+      <svg width="170" height="170" viewBox="0 0 170 170">
+        <circle cx="85" cy="85" r="70" fill="none" stroke="#e8ecef" stroke-width="16"/>
+        <circle cx="85" cy="85" r="70" fill="none" stroke="#4CAF7D" stroke-width="16" stroke-linecap="round" stroke-dasharray="440" stroke-dashoffset="110" id="mainRingFill"/>
+      </svg>
+      <div class="ring-label">
+        <div style="font-size:36px;font-weight:800;color:#2C2C2C;" id="homeScore">—</div>
+        <div style="font-size:14px;font-weight:800;color:#4CAF7D;" id="homeRiskLabel">Tap test</div>
+      </div>
+    </div>
+    <p style="text-align:center;font-size:15px;font-weight:600;color:#888;margin-top:4px;">Today's Cognitive Score</p>
+  </div>
+
+  <!-- Action Buttons -->
+  <div style="padding:0 20px;display:flex;flex-direction:column;gap:10px;">
+    <button class="btn btn-primary" onclick="startVoiceTest()">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2a3 3 0 013 3v7a3 3 0 01-6 0V5a3 3 0 013-3z"/><path d="M19 10v2a7 7 0 01-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+      Voice Clarity Test
+    </button>
+    <button class="btn btn-outline" onclick="startMemoryGame()">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+      Memory + Image Quiz
+      <span class="gemini-badge" style="padding:3px 8px;font-size:10px;">Gemini AI</span>
+    </button>
+    <button class="btn" style="background:#f0f9f5;color:#1A6B72;border:2px solid #c8edd9;" onclick="goto('s_face')">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 10-16 0"/></svg>
+      Facial Expression Scan
+    </button>
+  </div>
+
+  <!-- Last session -->
+  <div id="lastSessionCard" style="margin:12px 20px 0;padding:15px 18px;background:#fff;border-radius:22px;box-shadow:0 2px 8px rgba(0,0,0,0.06);display:flex;align-items:center;gap:12px;">
+    <div style="width:40px;height:40px;border-radius:50%;background:#e8f5ee;display:flex;align-items:center;justify-content:center;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4CAF7D" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+    </div>
+    <div>
+      <p style="font-size:13px;color:#888;margin:0;font-weight:600;">Last session</p>
+      <p id="lastSessionText" style="font-size:16px;color:#2C2C2C;margin:0;font-weight:700;">No sessions yet — start a test!</p>
+    </div>
+  </div>
+
+  <div style="flex:1;"></div>
+  <div class="nav">
+    <div class="nav-item on"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12L12 3l9 9"/><path d="M9 21V12h6v9"/></svg><span>Home</span><div class="nav-dot"></div></div>
+    <div class="nav-item" onclick="startMemoryGame()"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/></svg><span>Tests</span><div class="nav-dot"></div></div>
+    <div class="nav-item" onclick="goto('s4')"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg><span>Results</span><div class="nav-dot"></div></div>
+    <div class="nav-item" onclick="goto('s5')"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg><span>Contacts</span><div class="nav-dot"></div></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+     SCREEN 2: VOICE TEST
+═══════════════════════════════════ -->
+<div class="screen" id="s2">
+  <div class="sbar"><span>Voice Test</span><span style="color:#1A6B72;font-size:14px;">Step 1 of 3</span></div>
+  <div class="back" onclick="goto('s1')">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1A6B72" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>Back
+  </div>
+
+  <div style="padding:14px 24px 0;">
+    <h2>Voice Clarity Test</h2>
+    <p class="sub" style="margin-top:4px;">Read the sentence below clearly aloud</p>
+  </div>
+
+  <!-- Mic button with audio visualizer -->
+  <div style="display:flex;flex-direction:column;align-items:center;padding:24px 0 14px;gap:16px;">
+    <div style="position:relative;display:flex;align-items:center;justify-content:center;width:190px;height:190px;">
+      <div class="p2" style="position:absolute;width:165px;height:165px;border-radius:50%;background:#1A6B72;opacity:.08;"></div>
+      <div class="p1" style="position:absolute;width:130px;height:130px;border-radius:50%;background:#1A6B72;opacity:.13;"></div>
+      <div id="micBtn" onclick="toggleVoiceRec()" style="width:96px;height:96px;border-radius:50%;background:#1A6B72;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:2;transition:background .3s;box-shadow:0 6px 24px rgba(26,107,114,0.35);">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M12 2a3 3 0 013 3v7a3 3 0 01-6 0V5a3 3 0 013-3z"/><path d="M19 10v2a7 7 0 01-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+      </div>
+    </div>
+
+    <!-- Live audio visualizer bars -->
+    <div class="audio-wave" id="audioWave" style="opacity:0;transition:opacity .3s;">
+      <div class="bar" id="wb1"></div><div class="bar" id="wb2"></div><div class="bar" id="wb3"></div>
+      <div class="bar" id="wb4"></div><div class="bar" id="wb5"></div><div class="bar" id="wb6"></div>
+      <div class="bar" id="wb7"></div><div class="bar" id="wb8"></div><div class="bar" id="wb9"></div>
+      <div class="bar" id="wb10"></div><div class="bar" id="wb11"></div><div class="bar" id="wb12"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <p class="label" style="margin-bottom:10px;">📖 Read this sentence clearly:</p>
+    <p id="voiceSentence" style="font-size:20px;font-weight:700;color:#2C2C2C;line-height:1.55;">"The quick brown fox jumps over the lazy dog near the river bank."</p>
+  </div>
+
+  <div id="voiceStatus" style="margin:0 20px 14px;padding:16px 18px;background:#f0f9f5;border-radius:20px;display:flex;gap:12px;align-items:center;">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#4CAF7D" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+    <p id="voiceStatusText" style="font-size:15px;font-weight:600;color:#2C2C2C;margin:0;">Tap the microphone to begin recording</p>
+  </div>
+
+  <div class="card" style="min-height:70px;">
+    <p class="label" style="margin-bottom:8px;">What you said:</p>
+    <p id="voiceResult" style="font-size:17px;font-weight:700;color:#1A6B72;min-height:28px;font-style:italic;">—</p>
+  </div>
+
+  <div style="flex:1;"></div>
+  <div style="padding:0 20px 16px;">
+    <button class="btn btn-primary" onclick="finishVoiceTest()">Next — Memory Quiz →</button>
+  </div>
+  <div style="display:flex;justify-content:center;gap:10px;padding-bottom:28px;">
+    <div style="width:32px;height:8px;border-radius:4px;background:#1A6B72;"></div>
+    <div style="width:8px;height:8px;border-radius:4px;background:#d0d5dd;"></div>
+    <div style="width:8px;height:8px;border-radius:4px;background:#d0d5dd;"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+     SCREEN 3: MEMORY GAME — MEMORIZE PHASE (with images)
+═══════════════════════════════════ -->
+<div class="screen" id="s3">
+  <div class="sbar"><span>Memory Quiz</span><span style="color:#1A6B72;font-size:14px;">Phase 1 of 2</span></div>
+  <div class="back" onclick="goto('s1')">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1A6B72" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>Back
+  </div>
+
+  <div style="padding:14px 24px 0;">
+    <h2>Memorize Phase</h2>
+    <p class="sub" style="margin-top:4px;">Remember these words & images!</p>
+  </div>
+
+  <div style="padding:10px 20px 0;">
+    <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
+      <span class="label">Progress</span>
+      <span style="font-size:14px;font-weight:700;color:#1A6B72;" id="memProgress">Word 1 of 5</span>
+    </div>
+    <div class="pbar"><div class="pfill" id="memBar" style="width:20%;"></div></div>
+  </div>
+
+  <div style="padding:14px 20px 0;">
+    <div style="background:#fff;border-radius:24px;padding:18px;box-shadow:0 2px 16px rgba(0,0,0,0.09);">
+      <!-- Image for current word -->
+      <div id="memImgContainer" class="mem-img-placeholder">🍎</div>
+      <div style="display:flex;align-items:center;gap:14px;">
+        <div style="position:relative;flex-shrink:0;width:72px;height:72px;">
+          <svg width="72" height="72" viewBox="0 0 72 72" style="transform:rotate(-90deg);">
+            <circle cx="36" cy="36" r="30" fill="none" stroke="#e8ecef" stroke-width="7"/>
+            <circle cx="36" cy="36" r="30" fill="none" stroke="#1A6B72" stroke-width="7" stroke-linecap="round" stroke-dasharray="188" id="memTimerArc"/>
+          </svg>
+          <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:20px;font-weight:800;color:#2C2C2C;" id="memTimerNum">5</div>
+        </div>
+        <div style="flex:1;text-align:center;">
+          <p class="label" style="margin-bottom:6px;">Word to Remember</p>
+          <p id="memWord" style="font-size:36px;font-weight:900;color:#1A6B72;margin:0;font-family:'Outfit',sans-serif;">Apple</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:12px;">
+    <p class="label" style="margin-bottom:10px;">Words memorised so far:</p>
+    <div id="memList" style="display:flex;flex-wrap:wrap;gap:8px;"></div>
+  </div>
+
+  <div style="margin:0 20px 20px;padding:12px 16px;background:#fff8f0;border-radius:18px;display:flex;gap:10px;align-items:center;">
+    <span style="font-size:18px;">💡</span>
+    <p style="font-size:14px;font-weight:600;color:#2C2C2C;margin:0;">Say each word AND describe the image — this boosts memory retention!</p>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+     SCREEN 3B: MEMORY — RECALL (Gemini powered)
+═══════════════════════════════════ -->
+<div class="screen" id="s3b">
+  <div class="sbar"><span>Memory Quiz</span><span style="color:#E07B6A;font-size:14px;">Phase 2 of 2</span></div>
+
+  <div style="padding:18px 24px 0;">
+    <h2>Recall the Words!</h2>
+    <p class="sub" style="margin-top:4px;">Say all 5 words you memorised</p>
+  </div>
+
+  <!-- Gemini powered badge -->
+  <div style="display:flex;justify-content:center;padding:8px 0 4px;">
+    <span class="gemini-badge">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M12 2a3 3 0 013 3v7a3 3 0 01-6 0V5a3 3 0 013-3z"/></svg>
+      Powered by Google Gemini AI
+    </span>
+  </div>
+
+  <div style="display:flex;flex-direction:column;align-items:center;padding:16px 0 12px;gap:14px;">
+    <!-- Record button for Gemini -->
+    <button id="geminiRecBtn" onclick="toggleGeminiRec()" style="width:88px;height:88px;border-radius:50%;background:#1A6B72;border:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;cursor:pointer;box-shadow:0 6px 24px rgba(26,107,114,0.35);transition:all .3s;">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"><path d="M12 2a3 3 0 013 3v7a3 3 0 01-6 0V5a3 3 0 013-3z"/><path d="M19 10v2a7 7 0 01-14 0v-2"/></svg>
+      <span style="color:#fff;font-size:10px;font-weight:700;">TAP</span>
+    </button>
+
+    <div id="recStatus" style="font-size:15px;font-weight:700;color:#888;">Tap mic to start recording</div>
+
+    <!-- Waveform -->
+    <div id="geminiWave" style="display:flex;align-items:center;gap:3px;height:40px;opacity:0;transition:opacity .3s;">
+      <div style="width:4px;border-radius:2px;background:#E07B6A;height:8px;" class="lb1"></div>
+      <div style="width:4px;border-radius:2px;background:#E07B6A;height:8px;" class="lb2"></div>
+      <div style="width:4px;border-radius:2px;background:#E07B6A;height:8px;" class="lb3"></div>
+      <div style="width:4px;border-radius:2px;background:#E07B6A;height:8px;" class="lb4"></div>
+      <div style="width:4px;border-radius:2px;background:#E07B6A;height:8px;" class="lb5"></div>
+      <div style="width:4px;border-radius:2px;background:#E07B6A;height:8px;" class="lb6"></div>
+      <div style="width:4px;border-radius:2px;background:#E07B6A;height:8px;" class="lb7"></div>
+    </div>
+
+    <p style="font-size:14px;font-weight:600;color:#888;text-align:center;padding:0 24px;margin:0;">Record yourself saying all 5 words, then tap "Analyse with Gemini"</p>
+  </div>
+
+  <div class="card">
+    <p class="label" style="margin-bottom:10px;">Browser recognition (backup):</p>
+    <p id="recallLive" style="font-size:16px;font-weight:700;color:#1A6B72;min-height:28px;font-style:italic;">Waiting...</p>
+  </div>
+
+  <div class="card" style="margin-top:0;">
+    <p class="label" style="margin-bottom:12px;">Words to recall:</p>
+    <div id="recallList" style="display:flex;flex-direction:column;gap:10px;"></div>
+  </div>
+
+  <div id="geminiAnalysisResult" style="display:none;margin:0 20px 14px;padding:16px;background:#e8f5ee;border-radius:20px;">
+    <p style="font-size:14px;font-weight:700;color:#2d7a52;margin:0 0 6px;">🤖 Gemini Analysis Complete!</p>
+    <p id="geminiResultText" style="font-size:14px;font-weight:600;color:#2C2C2C;margin:0;"></p>
+  </div>
+
+  <div style="flex:1;"></div>
+  <div style="padding:0 20px;display:flex;flex-direction:column;gap:10px;padding-bottom:20px;">
+    <button class="btn btn-primary" id="analyseGeminiBtn" onclick="analyseWithGemini()" style="display:none;">
+      <span class="gemini-badge" style="padding:3px 8px;font-size:11px;">Gemini</span>
+      Analyse My Recording
+    </button>
+    <button class="btn btn-outline btn-sm" onclick="finishRecall()">Done — Skip to Results →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+     SCREEN: FACIAL SCAN
+═══════════════════════════════════ -->
+<div class="screen" id="s_face">
+  <div class="sbar"><span>Facial Scan</span><span></span></div>
+  <div class="back" onclick="stopCamera();goto('s1')">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1A6B72" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>Back
+  </div>
+
+  <div style="padding:14px 24px 0;">
+    <h2>Facial Expression</h2>
+    <p class="sub" style="margin-top:4px;">Claude AI analyses your expression</p>
+  </div>
+
+  <div style="margin:16px 20px 0;position:relative;" class="cam-overlay">
+    <video id="camFeed" autoplay muted playsinline></video>
+    <canvas id="camCanvas" style="display:none;"></canvas>
+    <div class="face-frame"></div>
+    <div style="position:absolute;bottom:14px;left:0;right:0;text-align:center;background:rgba(0,0,0,0.55);padding:8px;border-radius:0 0 20px 20px;">
+      <p style="color:#fff;font-size:14px;font-weight:700;margin:0;">Position your face in the oval</p>
+    </div>
+  </div>
+
+  <div id="faceStatus" style="margin:14px 20px 0;padding:14px 18px;background:#f0f9f5;border-radius:20px;display:flex;gap:12px;align-items:center;">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#4CAF7D" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+    <p id="faceStatusText" style="font-size:15px;font-weight:600;color:#2C2C2C;margin:0;">Camera starting...</p>
+  </div>
+
+  <div class="card" id="faceResultCard" style="display:none;">
+    <p class="label" style="margin-bottom:14px;">AI Expression Analysis</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;" id="faceResultGrid"></div>
+    <div id="faceNotes" style="margin-top:14px;padding:14px;background:#f0f9f5;border-radius:16px;font-size:15px;font-weight:600;color:#2C2C2C;"></div>
+  </div>
+
+  <div style="flex:1;"></div>
+  <div style="padding:0 20px 28px;display:flex;flex-direction:column;gap:10px;">
+    <button class="btn btn-primary" id="captureBtn" onclick="captureFace()">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M2 12s3-8 10-8 10 8 10 8-3 8-10 8-10-8-10-8z"/></svg>
+      Capture & Analyse
+    </button>
+    <button class="btn btn-outline btn-sm" onclick="stopCamera();goto('s4')">Continue to Results →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+     SCREEN 4: RESULTS
+═══════════════════════════════════ -->
+<div class="screen" id="s4">
+  <div class="sbar"><span>Results</span><span></span></div>
+  <div class="back" onclick="goto('s1')">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1A6B72" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>Back
+  </div>
+
+  <div style="padding:10px 24px 0;">
+    <h2>Today's Results</h2>
+    <p class="sub" style="margin-top:4px;">AI-powered cognitive assessment</p>
+  </div>
+
+  <div style="padding:16px 0 8px;">
+    <div class="ring-wrap">
+      <svg width="170" height="170" viewBox="0 0 170 170">
+        <circle cx="85" cy="85" r="65" fill="none" stroke="#fde8e5" stroke-width="24"/>
+        <circle cx="85" cy="85" r="65" fill="none" stroke="#fff3e0" stroke-width="24" stroke-dasharray="136 272" stroke-dashoffset="0"/>
+        <circle cx="85" cy="85" r="65" fill="none" stroke="#e8f5ee" stroke-width="24" stroke-dasharray="136 272" stroke-dashoffset="-136"/>
+        <circle cx="85" cy="85" r="65" fill="none" stroke="#4CAF7D" stroke-width="11" stroke-linecap="round" stroke-dasharray="232 176" id="scoreDialFill"/>
+        <circle cx="85" cy="85" r="52" fill="#F8F9FA"/>
+      </svg>
+      <div class="ring-label">
+        <div style="font-size:32px;font-weight:800;color:#2C2C2C;" id="resultScore">—</div>
+        <div style="font-size:13px;font-weight:800;color:#4CAF7D;" id="resultLabel">—</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <p class="label" style="margin-bottom:14px;">Score Breakdown</p>
+    <div style="display:flex;flex-direction:column;gap:14px;">
+      <div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+          <span style="font-size:16px;font-weight:700;color:#2C2C2C;">🎙 Voice Clarity</span>
+          <span style="font-size:16px;font-weight:700;color:#4CAF7D;" id="voiceScoreLabel">—</span>
+        </div>
+        <div class="pbar"><div class="pfill" id="voiceScoreBar" style="width:0%;"></div></div>
+      </div>
+      <div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+          <span style="font-size:16px;font-weight:700;color:#2C2C2C;">🧠 Memory Recall</span>
+          <span style="font-size:16px;font-weight:700;color:#4CAF7D;" id="memScoreLabel">—</span>
+        </div>
+        <div class="pbar"><div class="pfill" id="memScoreBar" style="width:0%;"></div></div>
+      </div>
+      <div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+          <span style="font-size:16px;font-weight:700;color:#2C2C2C;">😊 Expressiveness</span>
+          <span style="font-size:16px;font-weight:700;color:#f5a623;" id="faceScoreLabel">—</span>
+        </div>
+        <div class="pbar"><div class="pfill" id="faceScoreBar" style="width:0%;background:#f5a623;"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SMS Alert Status (Hidden by default) -->
+  <div id="smsStatusBanner" style="display:none;margin:16px 20px;padding:16px;background:#e8f5ee;border-radius:20px;border:1.5px solid #4CAF7D;display:flex;align-items:center;gap:12px;">
+    <div style="width:40px;height:40px;border-radius:12px;background:#4CAF7D;display:flex;align-items:center;justify-content:center;color:#fff;">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+    </div>
+    <div style="flex:1;">
+      <p style="font-size:14px;font-weight:800;color:#2C2C2C;margin:0;">SMS Alert Sent</p>
+      <p style="font-size:12px;color:#4CAF7D;font-weight:700;margin:2px 0 0;">Notified: Harsh Agarwal</p>
+    </div>
+  </div>
+
+  <div style="margin:0 20px 16px;padding:18px;background:#f0f9f5;border-radius:22px;display:flex;gap:14px;align-items:flex-start;">
+    <div style="width:44px;height:44px;border-radius:50%;background:#4CAF7D;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+    </div>
+    <div>
+      <p class="label" style="margin-bottom:6px;">Today's Tip</p>
+      <p style="font-size:16px;font-weight:700;color:#2C2C2C;margin:0;" id="resultTip">Complete a test to see your personalised tip.</p>
+    </div>
+  </div>
+
+  <!-- Emergency auto-alert info -->
+  <div id="emergencyResultAlert" style="display:none;margin:0 20px 14px;padding:18px;background:#fff5f5;border:1.5px solid #fde8e5;border-radius:22px;display:flex;gap:14px;align-items:center;">
+    <div style="font-size:28px;">🚨</div>
+    <div>
+      <p style="font-size:15px;font-weight:800;color:#c0392b;margin:0;">Emergency Contact Notified</p>
+      <p id="emergencyResultMsg" style="font-size:13px;font-weight:600;color:#888;margin:4px 0 0;">Your caregiver has been alerted about your score.</p>
+    </div>
+  </div>
+
+  <div style="padding:0 20px 28px;">
+    <button class="btn btn-sage" onclick="goto('s5')">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+      View Emergency Contacts
+    </button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+     SCREEN 5: EMERGENCY CONTACTS (Full)
+═══════════════════════════════════ -->
+<div class="screen" id="s5">
+  <div class="sbar"><span>⚙️ Settings & Profile</span><span></span></div>
+  <div class="back" onclick="goto('s1')">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1A6B72" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>Back
+  </div>
+
+  <div style="padding:8px 24px 0;">
+    <h2>Profile & Settings</h2>
+    <p class="sub" style="margin-top:4px;">Manage your account and preferences</p>
+  </div>
+
+  <!-- SOS Emergency Banner -->
+  <div style="margin:12px 20px;padding:18px;background:linear-gradient(135deg,#c0392b,#E07B6A);border-radius:24px;display:flex;align-items:center;gap:16px;">
+    <button class="sos-btn" style="width:64px;height:64px;background:rgba(255,255,255,0.2);box-shadow:none;" onclick="triggerEmergency()">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 014.82 12 19.79 19.79 0 011.77 3.4 2 2 0 013.74 1h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L7.91 8.9a16 16 0 006.29 6.29l1.06-1.06a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+      <span>SOS</span>
+    </button>
+    <div>
+      <p style="color:#fff;font-size:17px;font-weight:800;margin:0;">Emergency SOS</p>
+      <p style="color:rgba(255,255,255,0.8);font-size:13px;font-weight:600;margin:4px 0 0;">Tap to call primary contact now</p>
+    </div>
+  </div>
+
+  <!-- Tab bar: Contacts / Add / History -->
+  <div class="tab-bar">
+    <button class="tab-btn active" id="tabContacts" onclick="switchTab('contacts')">Contacts</button>
+    <button class="tab-btn" id="tabHistory" onclick="switchTab('history')">History</button>
+    <button class="tab-btn" id="tabSettings" onclick="switchTab('settings')">Settings</button>
+    <button class="tab-btn" id="tabAdd" onclick="switchTab('add')">+</button>
+  </div>
+
+  <!-- CONTACTS LIST -->
+  <div id="tabPanelContacts">
+    <div id="contactsList" style="display:flex;flex-direction:column;gap:0;"></div>
+    <div id="noContactsMsg" style="display:none;text-align:center;padding:32px 20px;color:#888;">
+      <div style="font-size:48px;margin-bottom:12px;">👥</div>
+      <p style="font-size:16px;font-weight:700;">No contacts yet</p>
+      <p style="font-size:14px;font-weight:600;">Add an emergency contact to get started</p>
+    </div>
+
+    <!-- Weekly Overview -->
+    <div class="card" style="margin-top:0;">
+      <p class="label" style="margin-bottom:14px;">Weekly Overview</p>
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:6px;">
+        <div class="tbar-wrap">Mon<div class="tbar"><div class="tbar-fill" style="height:75%;background:#4CAF7D;"></div></div></div>
+        <div class="tbar-wrap">Tue<div class="tbar"><div class="tbar-fill" style="height:85%;background:#4CAF7D;"></div></div></div>
+        <div class="tbar-wrap">Wed<div class="tbar"><div class="tbar-fill" style="height:58%;background:#f5a623;"></div></div></div>
+        <div class="tbar-wrap">Thu<div class="tbar"><div class="tbar-fill" style="height:70%;background:#4CAF7D;"></div></div></div>
+        <div class="tbar-wrap">Fri<div class="tbar"><div class="tbar-fill" style="height:80%;background:#4CAF7D;"></div></div></div>
+        <div class="tbar-wrap">Sat<div class="tbar"><div class="tbar-fill" style="height:44%;background:#E07B6A;"></div></div></div>
+        <div class="tbar-wrap" style="color:#1A6B72;font-weight:800;">Today<div class="tbar" style="border:2px solid #1A6B72;"><div class="tbar-fill" id="todayBar" style="height:82%;background:#1A6B72;"></div></div></div>
+      </div>
+    </div>
+
+    <!-- Auto-alert toggle -->
+    <div class="card" style="margin-top:0;">
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <div>
+          <p style="font-size:17px;font-weight:700;color:#2C2C2C;margin:0;">Auto-Call on High Risk</p>
+          <p style="font-size:13px;color:#888;font-weight:600;margin:4px 0 0;">Auto-alert when score drops below 45</p>
+        </div>
+        <div onclick="toggleAlert()" style="cursor:pointer;">
+          <div id="toggleBg" style="width:54px;height:31px;border-radius:16px;background:#1A6B72;position:relative;transition:background .25s;">
+            <div id="toggleThumb" style="position:absolute;top:3px;right:3px;width:25px;height:25px;border-radius:50%;background:#fff;transition:right .25s;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADD CONTACT FORM -->
+  <div id="tabPanelAdd" style="display:none;padding:0 20px;">
+    <div style="background:#fff;border-radius:24px;padding:20px;box-shadow:0 2px 14px rgba(0,0,0,0.07);">
+      <p style="font-size:18px;font-weight:800;color:#2C2C2C;margin:0 0 16px;">Add Emergency Contact</p>
+
+      <label style="font-size:13px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.6px;">Photo URL (optional)</label>
+      <input class="form-input" type="url" id="contactPhoto" placeholder="https://example.com/photo.jpg">
+      <div style="display:flex;justify-content:center;margin:10px 0;">
+        <div id="photoPreview" style="width:72px;height:72px;border-radius:50%;background:#e8ecef;display:flex;align-items:center;justify-content:center;font-size:28px;overflow:hidden;">👤</div>
+      </div>
+
+      <label style="font-size:13px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.6px;">Full Name *</label>
+      <input class="form-input" type="text" id="contactName" placeholder="Sarah Anderson">
+
+      <label style="font-size:13px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.6px;margin-top:14px;display:block;">Phone Number *</label>
+      <input class="form-input" type="tel" id="contactPhone" placeholder="+1 555 000 0000">
+
+      <label style="font-size:13px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.6px;margin-top:14px;display:block;">Relationship</label>
+      <select class="form-input" id="contactRelation" style="margin-top:8px;appearance:none;background:#f8f9fa;">
+        <option>Daughter</option>
+        <option>Son</option>
+        <option>Spouse / Partner</option>
+        <option>Sibling</option>
+        <option>Caregiver</option>
+        <option>Doctor</option>
+        <option>Friend</option>
+        <option>Other</option>
+      </select>
+
+      <label style="display:flex;align-items:center;gap:10px;margin-top:16px;cursor:pointer;">
+        <input type="checkbox" id="contactPrimary" style="width:20px;height:20px;accent-color:#1A6B72;">
+        <div>
+          <span style="font-size:16px;font-weight:700;color:#2C2C2C;">Set as Primary Contact</span>
+          <p style="font-size:13px;color:#888;font-weight:600;margin:2px 0 0;">Called first in emergencies</p>
+        </div>
+      </label>
+
+      <div style="margin-top:20px;display:flex;flex-direction:column;gap:10px;">
+        <button class="btn btn-primary" onclick="saveContact()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          Save Contact
+        </button>
+        <button class="btn btn-outline btn-sm" onclick="switchTab('contacts')">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- EMERGENCY HISTORY -->
+  <div id="tabPanelHistory" style="display:none;">
+    <div style="padding:0 24px 16px;">
+      <div style="display:flex;background:#f0f2f5;border-radius:12px;padding:4px;">
+        <button id="btnHistEvents" onclick="toggleHistorySubTab('events')" style="flex:1;border:none;padding:8px;border-radius:8px;font-weight:700;font-size:12px;background:#fff;box-shadow:0 2px 4px rgba(0,0,0,0.05);">Emergency</button>
+        <button id="btnHistSms" onclick="toggleHistorySubTab('sms')" style="flex:1;border:none;padding:8px;border-radius:8px;font-weight:700;font-size:12px;background:transparent;color:#888;">SMS Logs</button>
+      </div>
+    </div>
+    <div id="historyList" style="display:flex;flex-direction:column;gap:0;"></div>
+    <div id="smsLogList" style="display:none;flex-direction:column;gap:0;"></div>
+    <div id="noHistoryMsg" style="display:none;text-align:center;padding:32px 20px;color:#888;">
+      <div style="font-size:48px;margin-bottom:12px;">✅</div>
+      <p style="font-size:16px;font-weight:700;">No emergency events</p>
+      <p style="font-size:14px;font-weight:600;">Great — all scores have been normal!</p>
+    </div>
+  </div>
+
+  <!-- SETTINGS & PROFILE -->
+  <div id="tabPanelSettings" style="display:none;padding:0 20px;">
+    <!-- Profile Card -->
+    <div class="card" style="margin:0 0 16px;padding:20px;">
+      <p class="label" style="margin-bottom:16px;">User Profile</p>
+      <div style="display:flex;align-items:center;gap:16px;margin-bottom:16px;">
+        <div id="profileImagePreview" style="width:64px;height:64px;border-radius:50%;background:#e8ecef;display:flex;align-items:center;justify-content:center;overflow:hidden;font-size:24px;">👤</div>
+        <div style="flex:1;">
+          <input class="form-input" type="text" id="profileNameInput" placeholder="Your Name" style="margin:0;font-size:18px;font-weight:800;">
+          <input class="form-input" type="url" id="profileImageUrlInput" placeholder="Profile Image URL" style="margin:8px 0 0;font-size:13px;height:36px;">
+        </div>
+      </div>
+      <button class="btn btn-sage btn-sm" onclick="saveProfile()" style="height:40px;border-radius:12px;">Update Profile</button>
+    </div>
+
+    <!-- App Settings -->
+    <div class="card" style="margin:0 0 16px;padding:20px;">
+      <p class="label" style="margin-bottom:16px;">Application Settings</p>
+      
+      <!-- Dark Mode -->
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
+        <div>
+          <p style="font-size:16px;font-weight:700;color:#2C2C2C;margin:0;">Dark Mode</p>
+          <p style="font-size:12px;color:#888;font-weight:600;margin:2px 0 0;">Easier on the eyes at night</p>
+        </div>
+        <div onclick="toggleDarkModeUI()" style="cursor:pointer;">
+          <div id="darkToggleBg" style="width:50px;height:28px;border-radius:14px;background:#e8ecef;position:relative;transition:all .25s;">
+            <div id="darkToggleThumb" style="position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:0 2px 4px rgba(0,0,0,0.1);transition:all .25s;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Notifications -->
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
+        <div>
+          <p style="font-size:16px;font-weight:700;color:#2C2C2C;margin:0;">Smart Alerts</p>
+          <p style="font-size:12px;color:#888;font-weight:600;margin:2px 0 0;">Auto-notify contacts on high risk</p>
+        </div>
+        <div onclick="toggleNotificationsUI()" style="cursor:pointer;">
+          <div id="notifyToggleBg" style="width:50px;height:28px;border-radius:14px;background:#e8ecef;position:relative;transition:all .25s;">
+            <div id="notifyToggleThumb" style="position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;transition:all .25s;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Voice Assistant -->
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <div>
+          <p style="font-size:16px;font-weight:700;color:#2C2C2C;margin:0;">Voice Assistant</p>
+          <p style="font-size:12px;color:#888;font-weight:600;margin:2px 0 0;">Enabled microphone for tests</p>
+        </div>
+        <div onclick="toggleVoiceAssistantUI()" style="cursor:pointer;">
+          <div id="vaToggleBg" style="width:50px;height:28px;border-radius:14px;background:#e8ecef;position:relative;transition:all .25s;">
+            <div id="vaToggleThumb" style="position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;transition:all .25s;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="height:24px;"></div>
+</div>
+
+</div><!-- /phone -->
+<div id="toast" style="position:fixed;bottom:100px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.8);color:#fff;padding:12px 24px;border-radius:30px;font-weight:700;font-size:14px;z-index:9999;display:none;text-align:center;min-width:200px;box-shadow:0 4px 15px rgba(0,0,0,0.3);"></div>
+<script src="app.js"></script>
+</body>
+</html>

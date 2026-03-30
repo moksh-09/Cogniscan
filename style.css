@@ -1,0 +1,456 @@
+/* ══════════════════════════════════
+   CogniScan — style.css
+   ══════════════════════════════════ */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  background: #e8ecef;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  font-family: 'Nunito', sans-serif;
+  padding: 20px 0;
+}
+
+/* ── Phone frame ─────────────────── */
+.phone {
+  width: 390px;
+  min-height: 844px;
+  background: #F8F9FA;
+  border-radius: 50px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+  border: 3px solid #d0d5dd;
+  transition: background 0.3s, color 0.3s;
+}
+
+/* ── Dark Theme Variables ─────────── */
+.phone.dark-theme {
+  --bg-main: #121212;
+  --bg-card: #1E1E1E;
+  --text-main: #FFFFFF;
+  --text-sub: #BBBBBB;
+  --text-label: #888888;
+  --border-color: #333333;
+  --nav-bg: #1A1A1A;
+  --input-bg: #2C2C2C;
+}
+
+.phone.dark-theme {
+  background: var(--bg-main) !important;
+  color: var(--text-main);
+}
+
+.phone.dark-theme .screen {
+  background: var(--bg-main) !important;
+}
+
+.phone.dark-theme .card, 
+.phone.dark-theme .nav,
+.phone.dark-theme #tabPanelAdd > div {
+  background: var(--bg-card) !important;
+  border-color: var(--border-color);
+  color: var(--text-main);
+}
+
+.phone.dark-theme h1, 
+.phone.dark-theme h2, 
+.phone.dark-theme .sbar {
+  color: var(--text-main) !important;
+}
+
+.phone.dark-theme .sub, 
+.phone.dark-theme .label {
+  color: var(--text-sub) !important;
+}
+
+.phone.dark-theme input,
+.phone.dark-theme select {
+  background: var(--input-bg) !important;
+  color: var(--text-main) !important;
+  border: 1px solid var(--border-color) !important;
+}
+
+.phone.dark-theme .nav-item {
+  color: #666;
+}
+
+.phone.dark-theme .nav-item.on {
+  color: #4db6ac;
+}
+
+.phone.dark-theme .nav {
+  border-top: 1.5px solid var(--border-color);
+}
+
+/* ── Screens ─────────────────────── */
+.screen {
+  display: none;
+  flex-direction: column;
+  height: 100%;
+  min-height: 844px;
+  overflow-y: auto;
+  background: #F8F9FA;
+}
+
+.screen.active {
+  display: flex;
+}
+
+.screen::-webkit-scrollbar {
+  display: none;
+}
+
+/* ── Status bar ──────────────────── */
+.sbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 28px 10px;
+  font-size: 14px;
+  font-weight: 800;
+  color: #2C2C2C;
+  flex-shrink: 0;
+}
+
+/* ── Typography ──────────────────── */
+h1 {
+  font-size: 28px;
+  font-weight: 800;
+  color: #2C2C2C;
+  line-height: 1.2;
+}
+
+h2 {
+  font-size: 24px;
+  font-weight: 800;
+  color: #2C2C2C;
+}
+
+.sub {
+  font-size: 16px;
+  color: #888;
+  font-weight: 600;
+}
+
+.label {
+  font-size: 13px;
+  font-weight: 700;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+
+/* ── Cards ───────────────────────── */
+.card {
+  background: #fff;
+  border-radius: 24px;
+  padding: 20px;
+  margin: 0 20px 14px;
+  box-shadow: 0 2px 14px rgba(0, 0, 0, 0.07);
+}
+
+/* ── Buttons ─────────────────────── */
+.btn {
+  border-radius: 28px;
+  border: none;
+  cursor: pointer;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  padding: 0 28px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  height: 60px;
+  transition: transform 0.1s, opacity 0.15s;
+  outline: none;
+}
+
+.btn:active {
+  transform: scale(0.97);
+  opacity: 0.88;
+}
+
+.btn-primary {
+  background: #1A6B72;
+  color: #fff;
+}
+
+.btn-sage {
+  background: #4CAF7D;
+  color: #fff;
+}
+
+.btn-outline {
+  background: #fff;
+  color: #1A6B72;
+  border: 2.5px solid #1A6B72;
+}
+
+.btn-coral {
+  background: #E07B6A;
+  color: #fff;
+}
+
+.btn-sm {
+  height: 48px;
+  font-size: 16px;
+  border-radius: 22px;
+}
+
+/* ── Back nav ────────────────────── */
+.back {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  padding: 4px 20px 0;
+  color: #1A6B72;
+  font-size: 16px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+/* ── Bottom nav ──────────────────── */
+.nav {
+  display: flex;
+  justify-content: space-around;
+  padding: 14px 0 26px;
+  border-top: 1.5px solid #eef0f3;
+  background: #fff;
+  flex-shrink: 0;
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #aaa;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.nav-item.on {
+  color: #1A6B72;
+}
+
+.nav-dot {
+  width: 24px;
+  height: 4px;
+  border-radius: 2px;
+  background: transparent;
+  transition: background 0.2s;
+}
+
+.nav-item.on .nav-dot {
+  background: #1A6B72;
+}
+
+/* ── Score ring ──────────────────── */
+.ring-wrap {
+  position: relative;
+  width: 170px;
+  height: 170px;
+  margin: 0 auto;
+}
+
+.ring-wrap svg {
+  transform: rotate(-90deg);
+}
+
+.ring-label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+/* ── Pulse animation ─────────────── */
+@keyframes pulse {
+  0%, 100% { transform: scale(1);   opacity: 0.18; }
+  50%       { transform: scale(1.2); opacity: 0.07; }
+}
+
+@keyframes pulse2 {
+  0%, 100% { transform: scale(1);    opacity: 0.12; }
+  50%       { transform: scale(1.35); opacity: 0.05; }
+}
+
+.p1 { animation: pulse  2.2s ease-in-out infinite; }
+.p2 { animation: pulse2 2.2s ease-in-out infinite 0.5s; }
+
+/* ── Mic recording indicator ─────── */
+@keyframes recBlink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.3; }
+}
+
+.rec-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #E07B6A;
+  animation: recBlink 1.2s ease-in-out infinite;
+}
+
+/* ── Progress bar ────────────────── */
+.pbar {
+  height: 8px;
+  background: #e8ecef;
+  border-radius: 8px;
+}
+
+.pfill {
+  height: 100%;
+  background: #1A6B72;
+  border-radius: 8px;
+  transition: width 0.5s ease;
+}
+
+/* ── Word badge ──────────────────── */
+.word-badge {
+  padding: 10px 20px;
+  border-radius: 22px;
+  font-size: 17px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ── Score chip ──────────────────── */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 18px;
+  border-radius: 22px;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+/* ── Timeline bar ────────────────── */
+.tbar-wrap {
+  width: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.tbar {
+  width: 14px;
+  height: 56px;
+  background: #e8ecef;
+  border-radius: 7px;
+  position: relative;
+  overflow: hidden;
+}
+
+.tbar-fill {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  border-radius: 7px;
+  transition: height 0.6s;
+}
+
+/* ── Setup screen ────────────────── */
+#setup {
+  background: linear-gradient(160deg, #0d4a50 0%, #1A6B72 60%, #4CAF7D 100%);
+}
+
+#setup .card {
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(10px);
+  border: 1.5px solid rgba(255, 255, 255, 0.2);
+}
+
+#setup input {
+  width: 100%;
+  padding: 14px 18px;
+  border-radius: 16px;
+  border: none;
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  font-family: 'Nunito', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  outline: none;
+  margin-top: 10px;
+}
+
+#setup input::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* ── Camera ──────────────────────── */
+#camFeed {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 20px;
+  background: #1a1a2e;
+}
+
+.cam-overlay {
+  position: relative;
+}
+
+.cam-overlay .face-frame {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 140px;
+  height: 160px;
+  border: 3px solid rgba(76, 175, 125, 0.8);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+/* ── Listening bar ───────────────── */
+.listening-bar {
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  height: 40px;
+  justify-content: center;
+}
+
+.listening-bar span {
+  display: block;
+  width: 5px;
+  border-radius: 3px;
+  background: #1A6B72;
+}
+
+@keyframes waveBar {
+  0%, 100% { height: 8px; }
+  50%       { height: 36px; }
+}
+
+.lb1 { animation: waveBar 0.9s ease-in-out infinite; }
+.lb2 { animation: waveBar 0.9s ease-in-out infinite 0.15s; }
+.lb3 { animation: waveBar 0.9s ease-in-out infinite 0.30s; }
+.lb4 { animation: waveBar 0.9s ease-in-out infinite 0.45s; }
+.lb5 { animation: waveBar 0.9s ease-in-out infinite 0.60s; }
+.lb6 { animation: waveBar 0.9s ease-in-out infinite 0.75s; }
+.lb7 { animation: waveBar 0.9s ease-in-out infinite 0.90s; }

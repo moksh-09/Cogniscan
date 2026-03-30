@@ -1,0 +1,50 @@
+[
+  {
+    "id": 1774799986890,
+    "timestamp": "2026-03-29T15:59:46.890Z",
+    "to": "Harsh Agarwal",
+    "phone": "7304082775",
+    "message": "🚨 COGNISCAN ALERT: High Risk detected for your loved one. Score: 40. Please check the app for details. - Harsh Agarwal",
+    "status": "SENT"
+  },
+  {
+    "id": 1774800450915,
+    "timestamp": "2026-03-29T16:07:30.916Z",
+    "to": "Harsh Agarwal",
+    "phone": "7304082775",
+    "message": "🚨 COGNISCAN ALERT: High Risk detected for Robert. Score: 40. View details at: http://localhost:3000/cp - Harsh Agarwal",
+    "status": "SENT"
+  },
+  {
+    "id": 1774800451568,
+    "timestamp": "2026-03-29T16:07:31.569Z",
+    "to": "Harsh Agarwal",
+    "phone": "7304082775",
+    "message": "🚨 COGNISCAN ALERT: High Risk detected for Robert. Score: 40. View details at: http://localhost:3000/cp - Harsh Agarwal",
+    "status": "SENT"
+  },
+  {
+    "id": 1774803215317,
+    "timestamp": "2026-03-29T16:53:35.319Z",
+    "to": "Harsh Agarwal",
+    "phone": "7304082775",
+    "message": "🚨 COGNISCAN ALERT: High Risk detected for Robert. Score: 40. View details at: http://localhost:3000/cp - Harsh Agarwal",
+    "status": "SENT"
+  },
+  {
+    "id": 1774803536590,
+    "timestamp": "2026-03-29T16:58:56.591Z",
+    "to": "Harsh Agarwal",
+    "phone": "7304082775",
+    "message": "🚨 COGNISCAN ALERT: High Risk detected for Robert. Score: 17. View details at: http://localhost:3000/cp - Harsh Agarwal",
+    "status": "SENT"
+  },
+  {
+    "id": 1774810617568,
+    "timestamp": "2026-03-29T18:56:57.568Z",
+    "to": "Harsh Agarwal",
+    "phone": "7304082775",
+    "message": "🚨 COGNISCAN ALERT: High Risk detected for Robert. Score: 25. View details at: http://localhost:3000/cp - Harsh Agarwal",
+    "status": "SENT"
+  }
+]

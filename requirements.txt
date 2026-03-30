@@ -1,0 +1,13 @@
+fastapi
+uvicorn
+python-multipart
+mediapipe
+opencv-python-headless
+numpy
+joblib
+torch
+transformers
+safetensors
+librosa
+requests
+pandas

@@ -1,0 +1,196 @@
+[
+  {
+    "id": 1774799986890,
+    "timestamp": "2026-03-29T15:59:46.890Z",
+    "score": 40,
+    "contactNotified": "Harsh Agarwal",
+    "phone": "7304082775"
+  },
+  {
+    "id": 1774800450915,
+    "timestamp": "2026-03-29T16:07:30.915Z",
+    "score": 40,
+    "contactNotified": "Harsh Agarwal",
+    "phone": "7304082775"
+  },
+  {
+    "id": 1774800451568,
+    "timestamp": "2026-03-29T16:07:31.568Z",
+    "score": 40,
+    "contactNotified": "Harsh Agarwal",
+    "phone": "7304082775"
+  },
+  {
+    "id": 1774802105566,
+    "timestamp": "2026-03-29T16:35:05.566Z",
+    "contactNotified": "Harsh Agarwal",
+    "phone": "7304082775",
+    "reason": "SOS button pressed",
+    "score": null
+  },
+  {
+    "id": 1774802121635,
+    "timestamp": "2026-03-29T16:35:21.635Z",
+    "contactNotified": "Harsh Agarwal",
+    "phone": "7304082775",
+    "reason": "SOS button pressed",
+    "score": null
+  },
+  {
+    "id": 1774803215317,
+    "timestamp": "2026-03-29T16:53:35.317Z",
+    "score": 40,
+    "contactNotified": "Harsh Agarwal",
+    "phone": "7304082775"
+  },
+  {
+    "id": 1774803512653,
+    "timestamp": "2026-03-29T16:58:32.653Z",
+    "contactNotified": "Harsh Agarwal",
+    "phone": "7304082775",
+    "reason": "SOS button pressed",
+    "score": null
+  },
+  {
+    "id": 1774803523321,
+    "timestamp": "2026-03-29T16:58:43.321Z",
+    "contactNotified": "Harsh Agarwal",
+    "phone": "7304082775",
+    "reason": "SOS button pressed",
+    "score": null
+  },
+  {
+    "id": 1774803531146,
+    "timestamp": "2026-03-29T16:58:51.146Z",
+    "contactNotified": "Harsh Agarwal",
+    "phone": "7304082775",
+    "reason": "SOS button pressed",
+    "score": null
+  },
+  {
+    "id": 1774803532337,
+    "timestamp": "2026-03-29T16:58:52.337Z",
+    "contactNotified": "Harsh Agarwal",
+    "phone": "7304082775",
+    "reason": "SOS button pressed",
+    "score": null
+  },
+  {
+    "id": 1774803532991,
+    "timestamp": "2026-03-29T16:58:52.991Z",
+    "contactNotified": "Harsh Agarwal",
+    "phone": "7304082775",
+    "reason": "SOS button pressed",
+    "score": null
+  },
+  {
+    "id": 1774803533173,
+    "timestamp": "2026-03-29T16:58:53.173Z",
+    "contactNotified": "Harsh Agarwal",
+    "phone": "7304082775",
+    "reason": "SOS button pressed",
+    "score": null
+  },
+  {
+    "id": 1774803533346,
+    "timestamp": "2026-03-29T16:58:53.346Z",
+    "contactNotified": "Harsh Agarwal",
+    "phone": "7304082775",
+    "reason": "SOS button pressed",
+    "score": null
+  },
+  {
+    "id": 1774803533527,
+    "timestamp": "2026-03-29T16:58:53.527Z",
+    "contactNotified": "Harsh Agarwal",
+    "phone": "7304082775",
+    "reason": "SOS button pressed",
+    "score": null
+  },
+  {
+    "id": 1774803533757,
+    "timestamp": "2026-03-29T16:58:53.757Z",
+    "contactNotified": "Harsh Agarwal",
+    "phone": "7304082775",
+    "reason": "SOS button pressed",
+    "score": null
+  },
+  {
+    "id": 1774803536590,
+    "timestamp": "2026-03-29T16:58:56.590Z",
+    "score": 17,
+    "contactNotified": "Harsh Agarwal",
+    "phone": "7304082775"
+  },
+  {
+    "id": 1774803536594,
+    "timestamp": "2026-03-29T16:58:56.594Z",
+    "contactNotified": "Harsh Agarwal",
+    "phone": "7304082775",
+    "reason": "Auto-alert: Low score",
+    "score": 17
+  },
+  {
+    "id": 1774803543300,
+    "timestamp": "2026-03-29T16:59:03.300Z",
+    "contactNotified": "Harsh Agarwal",
+    "phone": "7304082775",
+    "reason": "Manual call",
+    "score": null
+  },
+  {
+    "id": 1774803544694,
+    "timestamp": "2026-03-29T16:59:04.694Z",
+    "contactNotified": "Harsh Agarwal",
+    "phone": "7304082775",
+    "reason": "Manual call",
+    "score": null
+  },
+  {
+    "id": 1774803544933,
+    "timestamp": "2026-03-29T16:59:04.933Z",
+    "contactNotified": "Harsh Agarwal",
+    "phone": "7304082775",
+    "reason": "Manual call",
+    "score": null
+  },
+  {
+    "id": 1774803545160,
+    "timestamp": "2026-03-29T16:59:05.160Z",
+    "contactNotified": "Harsh Agarwal",
+    "phone": "7304082775",
+    "reason": "Manual call",
+    "score": null
+  },
+  {
+    "id": 1774810617568,
+    "timestamp": "2026-03-29T18:56:57.568Z",
+    "score": 25,
+    "contactNotified": "Harsh Agarwal",
+    "phone": "7304082775"
+  },
+  {
+    "id": 1774810617571,
+    "timestamp": "2026-03-29T18:56:57.571Z",
+    "contactNotified": "Harsh Agarwal",
+    "phone": "7304082775",
+    "reason": "Auto-alert: Low score",
+    "score": 25
+  },
+  {
+    "id": 1774810741888,
+    "timestamp": "2026-03-29T18:59:01.888Z",
+    "contactNotified": "Harsh Agarwal",
+    "phone": "7304082775",
+    "reason": "Manual call",
+    "score": null
+  },
+  {
+    "id": 1774810745870,
+    "timestamp": "2026-03-29T18:59:05.870Z",
+    "contactNotified": "Harsh Agarwal",
+    "phone": "7304082775",
+    "reason": "Manual call",
+    "score": null
+  }
+]
